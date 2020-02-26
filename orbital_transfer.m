@@ -1,9 +1,12 @@
 clear; 
-num_body = 3; 
+num_body = 2; 
+inc_vel = false;
+dec_vel = false;
 G = 0.1;
-M = [1000, 1, 100]; 
-X = [0 0; 1 0; 5 0];
-V = [0 0; 0 10; 0 4]; 
+M = [1000, 100]; 
+X = [0 0; 2 0];
+init_pos = X(2,1);
+V = [0 0; 0 sqrt(G*M(1)/X(2,1))]; 
 T = 20;
 dt = 0.01; 
 clockmax = ceil(T/dt);
@@ -28,8 +31,18 @@ for num_frame = 1:clockmax
     hold on 
     plot (X(2,1), X(2,2), 'ko');
     hold on
-    plot (X(3,1), X(3,2), 'ro');
+%     plot (X(3,1), X(3,2), 'ro');
     axis ([-7 7 -7 7]);
     drawnow;
-    hold off;
+%     hold off;
+    
+    if ~inc_vel && X(2,1) >= init_pos && num_frame > 50 
+        inc_vel = true;
+        fprintf("Increase velocity: %d\n", inc_vel);
+        V(2,:) = V(2,:) + [0, 1];
+    elseif inc_vel && ~dec_vel && X(2,2) > -0.1 && X(2,2) < 0.1 && X(2,1) < 0
+        dec_vel = true;
+        fprintf("Decrease velocity: %d\n", dec_vel);
+        V(2,:) = [0 -sqrt(G*M(1)/abs(X(2,1)))];
+    end
 end
