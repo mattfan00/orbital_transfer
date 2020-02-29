@@ -2,13 +2,13 @@ clear;
 num_body = 2; 
 inc_vel = false;
 dec_vel = false;
-G = 0.1;
+G = 0.05;
 M = [1000, 100]; 
 X = [0 0; 2 0];
 init_pos = X(2,1);
 V = [0 0; 0 sqrt(G*M(1)/X(2,1))]; 
 T = 20;
-dt = 0.01; 
+dt = 0.005; 
 clockmax = ceil(T/dt);
 
 for num_frame = 1:clockmax
@@ -33,16 +33,19 @@ for num_frame = 1:clockmax
     hold on
 %     plot (X(3,1), X(3,2), 'ro');
     axis ([-7 7 -7 7]);
+    daspect([1 1 1]);
     drawnow;
 %     hold off;
     
-    if ~inc_vel && X(2,1) >= init_pos && num_frame > 50 
+    if ~inc_vel && X(2,2) > -0.01 && X(2,2) < 0.01 && num_frame > 300 
         inc_vel = true;
-        fprintf("Increase velocity: %d\n", inc_vel);
-        V(2,:) = V(2,:) + [0, 1];
-    elseif inc_vel && ~dec_vel && X(2,2) > -0.1 && X(2,2) < 0.1 && X(2,1) < 0
+        old_vel = V(2,2);
+        V(2,:) = V(2,:) + [0, .5];
+        fprintf("Increase velocity from %d to : %d\n", old_vel, V(2,2));
+    elseif inc_vel && ~dec_vel && X(2,2) > -0.05 && X(2,2) < 0.05 && X(2,1) < 0
         dec_vel = true;
-        fprintf("Decrease velocity: %d\n", dec_vel);
+        old_vel = abs(V(2,2));
         V(2,:) = [0 -sqrt(G*M(1)/abs(X(2,1)))];
+        fprintf("Decrease velocity from %d to: %d\nRadius is now %d\n", old_vel, V(2,2), abs(X(2,1)));
     end
 end
