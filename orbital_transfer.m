@@ -32,17 +32,17 @@ for num_frame = 1:clockmax
     plot (X(2,1), X(2,2), 'ko');
     hold on
 %     plot (X(3,1), X(3,2), 'ro');
-    axis ([-7 7 -7 7]);
+%     axis ([-7 7 -7 7]);
     daspect([1 1 1]);
-    drawnow;
+%     drawnow;
 %     hold off;
     
     if ~inc_vel && X(2,2) > -0.01 && X(2,2) < 0.01 && num_frame > 300 
         inc_vel = true;
         old_vel = V(2,2);
-        V(2,:) = V(2,:) + [0, .5];
+        V(2,:) = V(2,:) + [0, 1.5];
         fprintf("Increase velocity from %d to : %d\n", old_vel, V(2,2));
-    elseif inc_vel && ~dec_vel && X(2,2) > -0.05 && X(2,2) < 0.05 && X(2,1) < 0
+    elseif inc_vel && ~dec_vel && X(2,2) > -0.01 && X(2,2) < 0.01 && X(2,1) < 0
         dec_vel = true;
         old_vel = abs(V(2,2));
         V(2,:) = [0 -sqrt(G*M(1)/abs(X(2,1)))];
