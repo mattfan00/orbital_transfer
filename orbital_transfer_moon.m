@@ -41,11 +41,11 @@ for num_frame = 1:clockmax
         inc_vel = true;
         old_vel = V(3,2);
         V(3,:) = [0, 9.045];
-        fprintf("Increase velocity from %d to %d\n", old_vel, V(3,2));
+        fprintf("Increase velocity from %d to %d. Time is %d\n", old_vel, V(3,2), t);
     elseif inc_vel && ~dec_vel && X(3,2) > -0.01 && X(3,2) < 0.01 && X(3,1) < 0
         dec_vel = true;
         old_vel = abs(V(3,2));
         V(3,:) = [0 -sqrt(G*M(1)/abs(X(3,1)))];
-        fprintf("Decrease velocity from %d to: %d\nRadius is now %d\n", old_vel, V(3,2), abs(X(3,1)));
+        fprintf("Decrease velocity from %d to: %d\nRadius is now %d. Time is %d\n", old_vel, V(3,2), abs(X(3,1)), t);
     end
 end
